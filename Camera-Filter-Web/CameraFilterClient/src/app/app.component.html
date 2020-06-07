@@ -1,0 +1,30 @@
+<h1>{{title}}</h1>
+<form *ngIf="formData" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div class="control">
+    <label>
+      <div>{{imageFilterName}}</div>
+      <select [formControlName]="filterSelectKey">
+        <option *ngFor="let filterName of filterNames; let i = index" [value]="i">{{filterName}}</option>
+      </select>
+    </label>
+    <div *ngIf="parametersData && parametersData.length" class="inner">
+      <div [formArrayName]="parametersKey" *ngFor="let parameterData of parametersData; let i = index;">
+        <app-type-control [type]="parameterData.value" [label]="parameterData.name" [fireError]="invalidlySubmitted" [formControlName]="i"></app-type-control>
+      </div>
+    </div>
+  </div>
+  <div class="control">
+    <label>
+      <div>Media</div>
+      <input type="file" accept="image/*,video/*" (change)="handleMediaUpload($event)" [formControlName]="mediaUploaderKey" />
+      <div [class.errors]="invalidlySubmitted | async" *ngIf="form.controls[mediaUploaderKey].errors">
+        <span *ngIf="form.controls[mediaUploaderKey].errors.required">{{mediaValidationMessage}}</span>
+      </div>
+    </label>
+  </div>
+  <div>
+    <button>Submit</button>
+  </div>
+</form>
+
+<img *ngIf="filteredMediaBase64Raw" [src]="filteredMediaBase64Raw" width="200px" />

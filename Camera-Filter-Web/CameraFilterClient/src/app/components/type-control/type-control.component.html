@@ -1,0 +1,14 @@
+<label>
+    <div>{{label}}</div>
+    <div [ngSwitch]="type">
+        <input *ngSwitchCase="typeEnum.Int32" type="text" [formControl]="typeControl" />
+        <input *ngSwitchCase="typeEnum.Double" type="text" [formControl]="typeControl" />
+        <input *ngSwitchCase="typeEnum.Color" type="color" [formControl]="typeControl" />
+    </div>
+    <div *ngIf="typeControl.errors" [class.errors]="fireError | async">
+        <span *ngFor="let error of errors">
+            <span *ngIf="typeControl.errors[error.name]">{{error.message}}</span>
+        </span>
+    </div>
+</label>
+
